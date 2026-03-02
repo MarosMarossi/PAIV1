@@ -1,5 +1,6 @@
 # PAIV1
 Repositor pre projekt
 
-Meno skupiny: IOTitáni
-Členovia skupiny: Maroš, Martin, Daniel
+<br> Téma: IOT Včely
+<br> Meno skupiny: IOTitáni
+<br> Členovia skupiny: Maroš, Martin, Daniel

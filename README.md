@@ -1,0 +1,6 @@
+# PAIV1
+Repositor pre projekt
+
+<br> Téma: IOT Vèely
+<br> Meno skupiny: IOTitáni
+<br> Èlenovia skupiny: Maroš, Martin, Daniel

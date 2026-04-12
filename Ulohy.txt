@@ -1,0 +1,14 @@
+»o treba zrobiù
+Pozorovanie stavu ˙æa pomocou ESP32
+
+##====[ ULOHY ]====##
+
+Teplomer(Martin) HOTOVO (6.4.)
+Vlhkomer(Martin) HOTOVO
+USB k·ble(Martin) HOTOVO
+V·ha (Martin) HOTOVO
+
+Dokument·cia (Dano)
+Plag·t (Dano)
+
+Program ASP (Maros) (Zakladna Login user roly hotove, treba data a dizajn)

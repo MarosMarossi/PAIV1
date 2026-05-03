@@ -11,6 +11,7 @@ namespace Honeytor.Data
             : base(options)
         {
         }
-        public DbSet<Honeytor.Models.Entry> Entry { get; set; } = default!;
+        public DbSet<HiveDevice> HiveDevice { get; set; } = default!;
+        public DbSet<Entry> Entries { get; set; } = default!;
     }
 }

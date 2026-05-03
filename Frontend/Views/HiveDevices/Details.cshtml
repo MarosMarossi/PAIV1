@@ -1,0 +1,138 @@
+﻿@model Honeytor.Models.HiveDetails
+
+@{
+    ViewData["Title"] = "Detaily";
+}
+
+<div class="spread-apart" style="display:flex;">
+    <h1>
+        Zariadenie @Html.DisplayFor(model => model.HiveDevice.DeviceReference)
+    </h1>
+    <div>
+        @if (User.IsInRole("Admin") || User.IsInRole("Mederator"))
+        {
+            <a class="btn btn-danger" asp-action="Edit" asp-route-id="@Model?.HiveDevice.HiveDeviceId">Uprav</a>
+        }
+        <a class="btn btn-primary" asp-action="Index">Späť na zoznam</a>
+    </div>
+</div>
+
+<div>
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.HiveDevice.TimeFrom)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.HiveDevice.TimeFrom)
+        </dd>
+    </dl>
+
+    @{
+        var lastEntry = Model.Entries?.OrderByDescending(e => e.Stored)
+            .FirstOrDefault();
+    }
+
+    @if (lastEntry != null)
+    {
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-label">Čas posledného merania</span>
+                <span class="stat-value accent">
+                    @lastEntry.Stored
+                </span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Teplota vonku</span>
+                <span class="stat-value">@lastEntry.Temperature°C</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Vlhkosť vonku</span>
+                <span class="stat-value">@lastEntry.Hum%</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Batéria</span>
+                <span class="stat-value text-green">@lastEntry.Bat%</span>
+            </div>
+        </div>
+    }
+
+
+    <h2>Záznamy</h2>
+
+    @foreach (var entry in Model.Entries?.OrderByDescending(e => e.Stored))
+    {
+        <div class="entry-body" style="gap: 30px">
+            <div class="spread-apart">
+                    <div><h6 class="highlight-text">#@entry.Id</h6></div>
+                    <div><h5 style="font-weight:bold;">@entry.Stored</h5></div>
+                </div>
+                <div class="spread-apart">
+                    <div style="text-align:center;">
+                        <div style="display: flex; gap: 10px;">
+                            <i class="bi bi-thermometer" style="color:red"></i>
+                            <div>Teplota</div>
+                        </div>
+                        <div class="stat-value" style="font-weight:bold;">@entry.Temperature °C</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="display: flex; gap: 10px;">
+                            <i class="bi bi-droplet" style="color:blue"></i>
+                            <div>Vlhkosť</div>
+                        </div>
+                        <div class="stat-value" style=" font-weight:bold;">@entry.Hum %</div>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="display: flex; gap: 10px;">
+                            <i class="bi bi-battery-half" style="color:green"></i>
+                            <div>Batéria</div>
+                        </div>
+                        <div class="stat-value" style="font-weight:bold;">
+                            @entry.Bat %
+                        </div>
+                    </div>
+                </div>
+            <div style="display: flex; flex-direction: column; gap: 10px">
+                <div style="font-weight:bold; font-size: 1.75em;">
+                    <i class="bi bi-archive-fill"></i> Úľe (@(entry.Hives.Length))
+                </div>
+                <div class="data-table-container entry-body">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="bi bi-card-text"></i>
+                                    <span style="padding:2px;">Názov</span>
+                                </th>
+                                <th>
+                                    <i class="bi bi-thermometer-half"></i>
+                                    <span style="padding:2px;">Teplota</span>
+                                </th>
+                                <th>
+                                    <i class="bi bi-droplet"></i>
+                                    <span style="padding:2px;">Vlhkosť</span>
+                                </th>
+                                <th>
+                                    <i class="bi bi-speedometer2"></i>
+                                    <span style="padding:2px;">Váha</span>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var hive in entry.Hives)
+                            {
+                                <tr style="border-bottom:1px solid #f0f0f0;">
+                                    <td style="padding:6px;">@hive.Id</td>
+                                    <td style="padding:6px;">@hive.Temperature °C</td>
+                                    <td style="padding:6px;">@hive.Humidity %</td>
+                                    <td style="padding:6px;">@hive.Weight kg</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+

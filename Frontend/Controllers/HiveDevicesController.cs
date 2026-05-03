@@ -7,27 +7,33 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Honeytor.Data;
 using Honeytor.Models;
+using Honeytor.Services;
+
+using System.Text.Json;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Honeytor.Controllers
 {
-    [Authorize]
-    public class EntriesController : Controller
+    public class HiveDevicesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly DeviceApiService _api;
 
-        public EntriesController(ApplicationDbContext context)
+        public HiveDevicesController(ApplicationDbContext context, DeviceApiService api)
         {
             _context = context;
+            _api = api;
         }
 
-        // GET: Entries
+        // GET: HiveDevices
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Entry.ToListAsync());
+            return View(await _context.HiveDevice.ToListAsync());
         }
 
-        // GET: Entries/Details/5
+        // GET: HiveDevices/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,42 +41,51 @@ namespace Honeytor.Controllers
                 return NotFound();
             }
 
-            var entry = await _context.Entry
-                .FirstOrDefaultAsync(m => m.EntryId == id);
-            if (entry == null)
+            var hiveDevice = await _context.HiveDevice
+                .FirstOrDefaultAsync(m => m.HiveDeviceId == id);
+            if (hiveDevice == null)
             {
                 return NotFound();
             }
 
-            return View(entry);
+            var from = hiveDevice.TimeFrom;
+
+            var pin = hiveDevice.PIN ?? "";
+            var DeviceID = hiveDevice.DeviceReference;
+
+            var entries = await _api.GetEntriesAsync(DeviceID, from, pin);
+
+            Console.WriteLine(JsonSerializer.Serialize(entries));
+
+            return View(new HiveDetails { HiveDevice = hiveDevice, Entries = entries});
         }
 
+        // GET: HiveDevices/Create
         [Authorize(Roles = "Admin,Mederator")]
-        // GET: Entries/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Entries/Create
+        // POST: HiveDevices/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [Authorize(Roles = "Admin,Mederator")]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EntryId,Humidity,Weight,Temperature,CreatedAt")] Entry entry)
+        [Authorize(Roles = "Admin,Mederator")]
+        public async Task<IActionResult> Create([Bind("HiveDeviceId,DeviceReference,PIN,TimeFrom")] HiveDevice hiveDevice)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(entry);
+                _context.Add(hiveDevice);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(entry);
+            return View(hiveDevice);
         }
 
+        // GET: HiveDevices/Edit/5
         [Authorize(Roles = "Admin,Mederator")]
-        // GET: Entries/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -78,23 +93,23 @@ namespace Honeytor.Controllers
                 return NotFound();
             }
 
-            var entry = await _context.Entry.FindAsync(id);
-            if (entry == null)
+            var hiveDevice = await _context.HiveDevice.FindAsync(id);
+            if (hiveDevice == null)
             {
                 return NotFound();
             }
-            return View(entry);
+            return View(hiveDevice);
         }
 
-        // POST: Entries/Edit/5
+        // POST: HiveDevices/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin,Mederator")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EntryId,Humidity,Weight,Temperature,CreatedAt")] Entry entry)
+        [Authorize(Roles = "Admin,Mederator")]
+        public async Task<IActionResult> Edit(int id, [Bind("HiveDeviceId,DeviceReference,PIN,TimeFrom")] HiveDevice hiveDevice)
         {
-            if (id != entry.EntryId)
+            if (id != hiveDevice.HiveDeviceId)
             {
                 return NotFound();
             }
@@ -103,12 +118,12 @@ namespace Honeytor.Controllers
             {
                 try
                 {
-                    _context.Update(entry);
+                    _context.Update(hiveDevice);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!EntryExists(entry.EntryId))
+                    if (!HiveDeviceExists(hiveDevice.HiveDeviceId))
                     {
                         return NotFound();
                     }
@@ -119,11 +134,11 @@ namespace Honeytor.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(entry);
+            return View(hiveDevice);
         }
 
+        // GET: HiveDevices/Delete/5
         [Authorize(Roles = "Admin,Mederator")]
-        // GET: Entries/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -131,35 +146,35 @@ namespace Honeytor.Controllers
                 return NotFound();
             }
 
-            var entry = await _context.Entry
-                .FirstOrDefaultAsync(m => m.EntryId == id);
-            if (entry == null)
+            var hiveDevice = await _context.HiveDevice
+                .FirstOrDefaultAsync(m => m.HiveDeviceId == id);
+            if (hiveDevice == null)
             {
                 return NotFound();
             }
 
-            return View(entry);
+            return View(hiveDevice);
         }
 
-        [Authorize(Roles = "Admin,Mederator")]
-        // POST: Entries/Delete/5
+        // POST: HiveDevices/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Mederator")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var entry = await _context.Entry.FindAsync(id);
-            if (entry != null)
+            var hiveDevice = await _context.HiveDevice.FindAsync(id);
+            if (hiveDevice != null)
             {
-                _context.Entry.Remove(entry);
+                _context.HiveDevice.Remove(hiveDevice);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool EntryExists(int id)
+        private bool HiveDeviceExists(int id)
         {
-            return _context.Entry.Any(e => e.EntryId == id);
+            return _context.HiveDevice.Any(e => e.HiveDeviceId == id);
         }
     }
 }

@@ -2,6 +2,7 @@ using Honeytor.Data;
 using Honeytor.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Honeytor.Services;
 using Microsoft.Extensions.DependencyInjection;
 using static System.Formats.Asn1.AsnWriter;
 
@@ -59,28 +60,45 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")))  ;
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<ApplicationRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
+builder.Services.AddHttpClient<Honeytor.Services.DeviceApiService>();
+builder.Services.AddScoped<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
-
 var scope = app.Services.CreateScope();
 
-/* AH AH ROLY */
-await Matungo_SeedRolesAsync(scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>());
-await Matungo_SeedAdminAccountAsync(scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>(),
-    "admin@leka.nosht",
-    "admin1A."
-);
+try
+{
+    var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"[AJAJ] Migration failed: {ex.Message}");
+}
 
+/* AH AH ROLY */
+try
+{
+    await Matungo_SeedRolesAsync(scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>());
+    await Matungo_SeedAdminAccountAsync(scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>(),
+        "admin@leka.nosht",
+        "admin1A."
+    );
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"[AJAJ] Role seeding failed: {ex.Message}");
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

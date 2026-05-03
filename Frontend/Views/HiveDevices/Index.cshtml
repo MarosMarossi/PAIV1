@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Honeytor.Models.HiveDevice>
+
+@{
+    ViewData["Title"] = "Ulíny";
+}
+
+<div style="display: flex; justify-content: space-between; margin-bottom: 25px;">
+    <div><h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 2rem;">@ViewData["Title"]</h1></div>
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Mederator"))
+    {
+        <div>
+            <a class="btn btn-primary" asp-action="Create">Vytvor nový</a>
+        </div>
+    }
+</div>
+
+
+<div style="display: flex; gap: 15px;">
+    @foreach (var item in Model)
+    {
+    <div class="card" style="gap: 20px;">
+        <div style="display: flex; justify-content: center; gap: 5px;">
+            @if (User.IsInRole("Admin") || User.IsInRole("Mederator"))
+            {
+                <a class="btn btn-danger" asp-action="Edit" asp-route-id="@item.HiveDeviceId">Uprav</a>
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.HiveDeviceId">Vymaž</a>
+            }
+        </div>
+        <div>
+            <div class="highlight-text" style="display: flex; gap: 10px; justify-items: center">
+                    <i style="font-size: 1.5em;" class="bi bi-archive-fill"></i>
+                    <h2>@Html.DisplayFor(modelItem => item.DeviceReference)</h2>
+            </div>
+            <h6>Merá od: @Html.DisplayFor(modelItem => item.TimeFrom)</h6>
+        </div>
+        <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.HiveDeviceId">Pozri</a>
+    </div>
+    }
+</div>
+

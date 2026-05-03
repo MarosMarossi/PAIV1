@@ -1,6 +1,29 @@
 ﻿@{
-    ViewData["Title"] = "Privacy Policy";
+    ViewData["Title"] = "Súkromie";
 }
-<h1>@ViewData["Title"]</h1>
 
-<p>We send your data to the bee overlord. It's a BEE-S policy!</p>
+<div class="container" style="padding-top: 10px; max-width: 800px;">
+    <h1 style="font-size: 3rem; font-weight: 900; margin-bottom: 2rem;">@ViewData["Title"]</h1>
+
+    <div class="card" style="margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1rem;"><i class="bi bi-shield"></i> Integrita dát</h3>
+        <p style="color: var(--text-secondary); line-height: 1.6;">
+            Honeytor funguje ako bezpečná vrstva medzi vaším zariadením a externým API, z ktorého sú údaje o úľoch získavané v reálnom čase. Aplikácia tieto dáta nevytvára ani nemení, iba ich sprostredkúva a zobrazuje.
+        </p>
+        <p style="color: var(--text-secondary); line-height: 1.6;">
+            Na zabezpečenie prístupu ukladáme iba nevyhnutné prihlasovacie údaje potrebné na autentifikáciu a komunikáciu so službou. Vaše telemetrické dáta u nás „nebývajú“, len cez nás prechádzajú.
+        </p>
+        <p>Je to jednoducho Bezzzzzpečné riešenie!</p>
+    </div>
+
+    <div class="card">
+        <h3 style="margin-bottom: 1rem;"><i class="bi bi-file-lock"></i> Šifrovanie</h3>
+        <p style="color: var(--text-secondary); line-height: 1.6;">
+            Všetka komunikácia medzi zariadením a cloudovou službou je zabezpečená modernými šifrovacími mechanizmami. Prenos dát prebieha cez zabezpečené kanály a citlivé informácie sú spracovávané s dôrazom na ochranu súkromia.
+        </p>
+    </div>
+
+    <p style="margin-top: 2rem; color: var(--text-muted); font-size: 0.875rem;">
+        Naposledy aktualizované: Apríl 2026.
+    </p>
+</div>

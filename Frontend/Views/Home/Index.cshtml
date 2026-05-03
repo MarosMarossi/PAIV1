@@ -1,7 +1,92 @@
 ﻿@{
-    ViewData["Title"] = "Man Areas";
+    ViewData["Title"] = "Honeytor";
 }
 
-<div class="text-center">
-    <img src="/imagus/lordofdizajn.png" style="width: 67vw"/>
-</div>
+<section style="padding: 40px 0 50px;">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <div class="badge">Inteligentný pomocník</div>
+            <h1 class="hero-title">
+                <span>HONEYTOR</span><br>
+                VČELÁROV<br>
+                POMOCNÍK
+            </h1>
+            <p class="hero-desc">
+                Honeytor vyrába vysoko výkonné mikrokontroléry navrhnuté špeciálne pre náročné prostredie moderných včelínov. Váha, teplota a vlhkosť – synchronizované do cloudu kdekoľvek na svete.
+            </p>
+            <div class="hero-btns">
+                <a href="/HiveDevices" class="btn btn-primary">Aktuálne dáta <i class="bi bi-chevron-right"></i></a>
+                <a href="#mission" class="btn btn-outline">Naša misia</a>
+            </div>
+        </div>
+        <div class="hero-img-wrap">
+            <div class="card spec-card">
+                <img src="~/imagus/johnchip.jpg" width="300"/>
+                <h3>ESP32-WROOM-32D</h3>
+                <p>Používa: </p>
+                <div class="spec-list">
+
+                    <div class="spec-item">
+                        <span style="padding-right: 10px;">Úľové váhy (GSM)</span>
+                        <strong>✔</strong>
+                    </div>
+
+                    <div class="spec-item">
+                        <span style="padding-right: 10px;">Modem 2G/3G/4G (SIM)</span>
+                        <strong>✔</strong>
+                    </div>
+
+                    <div class="spec-item">
+                        <span style="padding-right: 10px;">Batéria 4Ah</span>
+                        <strong>✔</strong>
+                    </div>
+
+                    <div class="spec-item">
+                        <span style="padding-right: 10px;">Solárny panel (1.5 m)</span>
+                        <strong>✔</strong>
+                    </div>
+
+                    <div class="spec-item">
+                        <span style="padding-right: 10px;">Váha USB modul</span>
+                        <strong>✔</strong>
+                    </div>
+
+                    <div class="spec-item">
+                        <span style="padding-right: 10px;">Quattro merač (vlhkosť + teplota)</span>
+                        <strong>✔</strong>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="mission" class="mission container">
+    <div class="mission-inner">
+        <h2 class="section-title">Naša misia</h2>
+        <p class="mission-text">
+            Honeytor bol založený na jednoduchom predpoklade: Včelárstvo by nemalo byť založené na dohadoch. Premosťujeme priepasť medzi tradičným včelárstvom a modernou technológiou, čím poskytujeme včelárom priamy prehľad o zdraví ich včelstva.
+        </p>
+    </div>
+</section>
+
+<section class="container">
+    <div class="card-grid">
+        <div class="card">
+            <i class="bi bi-thermometer" style="color:red"></i>
+            <h4>Teplota</h4>
+            <p>Sledovanie tepelnej stability plodiska s vysokým rozlíšením.</p>
+        </div>
+        <div class="card">
+            <i class="bi bi-droplet" style="color:blue"></i>
+            <h4>Vlhkosť</h4>
+            <p>Monitorovanie atmosféry na zabezpečenie optimálneho dozrievania medu.</p>
+        </div>
+        <div class="card">
+            <i class="bi bi-speedometer2" style="color:green"></i>
+            <h4>Váhová stupnica</h4>
+            <p>Analýza znášky nektáru prostredníctvom váhy.</p>
+        </div>
+    </div>
+</section>

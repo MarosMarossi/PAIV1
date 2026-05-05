@@ -1,34 +1,4 @@
-/* using System.Net.Http.Json;
-using Honeytor.Models;
 
-namespace Honeytor.Services
-{
-    public class DeviceApiService
-    {
-        private readonly HttpClient _http;
-
-        public DeviceApiService(HttpClient http)
-        {
-            _http = http;
-        }
-
-        public async Task<List<Entry>> GetEntriesAsync(int deviceId, DateTime from, string PIN)
-        {
-            var fromStr = from.ToString("yyyyMMdd");
-            var url = $"http://admin.domatom.net/api/hiveapi/files?device={deviceId}&pin={PIN}&from={fromStr}";
-            Console.WriteLine(url);
-
-            var response = await _http.GetAsync(url);
-            //response.EnsureSuccessStatusCode();
-
-            var result = await response.Content.ReadFromJsonAsync<ApiResponse>();
-
-            return result?.HiveFiles ?? new List<Entry>();
-        }
-    }
-}
-
-*/
 
 using System.Net.Http.Json;
 using Honeytor.Data;
@@ -51,7 +21,7 @@ namespace Honeytor.Services
         public async Task<List<Entry>> GetEntriesAsync(int deviceId, DateTime from, string PIN)
         {
             var fromStr = from.ToString("yyyyMMdd");
-            var url = $"http://admin.domatom.net/api/hiveapi/files?device={deviceId}&pin={PIN}&from={fromStr}";
+            var url = $"{deviceId}&pin={PIN}&from={fromStr}";
 
             try
             {

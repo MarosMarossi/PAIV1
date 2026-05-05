@@ -2,5 +2,10 @@
 ##====[ ULOHY ]====##
 
 Frontend - Maros
+(Github/Uniot, Webstránka, Úpravy)
 Backend - Martin
+(ESP, Program, Súčiastnky, Reprezentácia)
 Dokumentacia - Daniel
+(Dokumentácia, Poster, Prezentácia, Aktivizoval ostatných)
+
+Ako vedúci tímu píšem, že sa všetci aktívne podieľali na tvorbe a každý spravil čo mal.

@@ -12,3 +12,6 @@ teplotu v úli
 
 Namerané údaje sú následne zaslané na webovú stránku, kde si ich môže včelár pohodlne prezerať na diaľku.
 Týmto spôsobom je možné sledovať stav včelstva bez nutnosti častého otvárania úľa.
+
+Demo na Web stránke:
+marossi.jcubeware.com
